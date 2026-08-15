@@ -1,13 +1,13 @@
 name: iCleanerLite
 options:
   deploymentTarget:
-    iOS: "16.0"
+    iOS: "17.0"
   bundleIdPrefix: com.mobiminer115
   createIntermediateGroups: true
 settings:
   base:
     SWIFT_VERSION: 5.0
-    IPHONEOS_DEPLOYMENT_TARGET: 16.0
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
     TARGETED_DEVICE_FAMILY: "1,2"
 targets:
   iCleanerLite:
@@ -23,7 +23,7 @@ targets:
         PRODUCT_NAME: iCleanerLite
         INFOPLIST_FILE: iCleanerLite/Info.plist
         SWIFT_VERSION: 5.0
-        IPHONEOS_DEPLOYMENT_TARGET: 16.0
+        IPHONEOS_DEPLOYMENT_TARGET: 17.0
         TARGETED_DEVICE_FAMILY: "1,2"
         CODE_SIGNING_ALLOWED: NO
         CODE_SIGNING_REQUIRED: NO
