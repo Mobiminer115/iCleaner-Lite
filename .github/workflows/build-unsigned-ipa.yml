@@ -16,10 +16,17 @@ jobs:
         run: brew install xcodegen
 
       - name: Generate Xcode project
-        run: xcodegen generate --spec project.yml --project iCleanerLite.xcodeproj
+        run: |
+          rm -rf iCleanerLite.xcodeproj
+          xcodegen generate --spec project.yml
+          test -f iCleanerLite.xcodeproj/project.pbxproj
 
       - name: Show Xcode version
         run: xcodebuild -version
+
+      - name: Validate generated project
+        run: |
+          xcodebuild -project iCleanerLite.xcodeproj -scheme iCleanerLite -showBuildSettings >/dev/null
 
       - name: Build iOS app
         run: |
