@@ -3,6 +3,7 @@ import Foundation
 struct ScanResult {
     let apps: [AppCacheInfo]
     let message: String?
+    let accessDenied: Bool
 }
 
 final class AppScanner {
@@ -19,7 +20,8 @@ final class AppScanner {
             guard !containers.isEmpty else {
                 return ScanResult(
                     apps: [],
-                    message: "No application containers were found. Check filesystem access."
+                    message: "No application containers were found. The current filesystem provider may not have access to other apps.",
+                    accessDenied: false
                 )
             }
 
@@ -58,12 +60,20 @@ final class AppScanner {
             let sorted = results.sorted { $0.totalSize > $1.totalSize }
             return ScanResult(
                 apps: sorted,
-                message: sorted.isEmpty ? "Application containers found, but no selected cache folders contain files." : nil
+                message: sorted.isEmpty ? "Application containers are visible, but the selected cleanup folders are empty." : nil,
+                accessDenied: false
+            )
+        } catch let error as FileSystemAccessError {
+            return ScanResult(
+                apps: [],
+                message: "Filesystem access is unavailable. iOS is blocking access to other apps' containers in the current environment. Enable a supported filesystem backend, then tap Retry Scan.",
+                accessDenied: true
             )
         } catch {
             return ScanResult(
                 apps: [],
-                message: "Cannot access application containers: \(error.localizedDescription)"
+                message: "Could not scan application containers: \(error.localizedDescription)",
+                accessDenied: true
             )
         }
     }
