@@ -1,0 +1,68 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A000000100000001 /* iCleanerLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000001 /* iCleanerLiteApp.swift */; };
+		A000000100000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000002 /* ContentView.swift */; };
+		A000000100000003 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000003 /* Models.swift */; };
+		A000000100000004 /* FileSystemProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000004 /* FileSystemProvider.swift */; };
+		A000000100000005 /* AppScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000005 /* AppScanner.swift */; };
+		A000000100000006 /* CacheCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A000001100000006 /* CacheCleaner.swift */; };
+		A000000100000007 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A000001100000007 /* Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A000001000000001 /* iCleanerLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCleanerLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A000001100000001 /* iCleanerLiteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/iCleanerLiteApp.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000003 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/Models.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000004 /* FileSystemProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/FileSystemProvider.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000005 /* AppScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/AppScanner.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000006 /* CacheCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerLite/CacheCleaner.swift; sourceTree = SOURCE_ROOT; };
+		A000001100000007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iCleanerLite/Info.plist; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A000002100000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A000003100000001 = {isa = PBXGroup; children = (A000003100000002 /* iCleanerLite */, A000003100000003 /* Products */); sourceTree = "<group>"; };
+		A000003100000002 /* iCleanerLite */ = {isa = PBXGroup; children = (A000001100000001, A000001100000002, A000001100000003, A000001100000004, A000001100000005, A000001100000006, A000001100000007); path = iCleanerLite; sourceTree = "<group>"; };
+		A000003100000003 /* Products */ = {isa = PBXGroup; children = (A000001000000001); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A000004100000001 /* iCleanerLite */ = {isa = PBXNativeTarget; buildConfigurationList = A000007100000001 /* Build configuration list for PBXNativeTarget "iCleanerLite" */; buildPhases = (A000005100000001 /* Sources */, A000002100000001 /* Frameworks */, A000005100000002 /* Resources */); buildRules = (); dependencies = (); name = iCleanerLite; productName = iCleanerLite; productReference = A000001000000001 /* iCleanerLite.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A000006100000001 /* Project object */ = {isa = PBXProject; attributes = {LastUpgradeCheck = 1600; TargetAttributes = {A000004100000001 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = A000007100000002 /* Build configuration list for PBXProject "iCleanerLite" */; compatibilityVersion = "Xcode 15.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A000003100000001; productRefGroup = A000003100000003 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (A000004100000001 /* iCleanerLite */); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A000005100000002 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (A000000100000007 /* Info.plist in Resources */); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A000005100000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A000000100000001, A000000100000002, A000000100000003, A000000100000004, A000000100000005, A000000100000006); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A000008100000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = iCleanerLite/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks"; PRODUCT_BUNDLE_IDENTIFIER = com.mobiminer.iCleanerLite; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; };
+		A000008100000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = iCleanerLite/Info.plist; IPHONEOS_DEPLOYMENT_TARGET = 17.0; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks"; PRODUCT_BUNDLE_IDENTIFIER = com.mobiminer.iCleanerLite; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SWIFT_OPTIMIZATION_LEVEL = "-O"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; };
+		A000008100000003 /* Project Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; }; };
+		A000008100000004 /* Project Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; }; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A000007100000001 /* Build configuration list for PBXNativeTarget "iCleanerLite" */ = {isa = XCConfigurationList; buildConfigurations = (A000008100000001 /* Debug */, A000008100000002 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A000007100000002 /* Build configuration list for PBXProject "iCleanerLite" */ = {isa = XCConfigurationList; buildConfigurations = (A000008100000003 /* Project Debug */, A000008100000004 /* Project Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = A000006100000001 /* Project object */;
+}
