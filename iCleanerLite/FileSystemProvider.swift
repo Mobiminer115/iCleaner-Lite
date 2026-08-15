@@ -6,17 +6,32 @@ protocol FileSystemProvider {
     func removeContents(of url: URL) throws
 }
 
+enum FileSystemAccessError: LocalizedError {
+    case inaccessible(URL, Error)
+
+    var errorDescription: String? {
+        switch self {
+        case .inaccessible(let url, let error):
+            return "Cannot access \(url.lastPathComponent.isEmpty ? url.path : url.lastPathComponent): \(error.localizedDescription)"
+        }
+    }
+}
+
 final class LocalFileSystemProvider: FileSystemProvider {
     private let fileManager = FileManager.default
 
     func directories(at url: URL) throws -> [URL] {
-        try fileManager.contentsOfDirectory(
-            at: url,
-            includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey],
-            options: [.skipsHiddenFiles]
-        ).filter { item in
-            let values = try? item.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
-            return values?.isDirectory == true && values?.isSymbolicLink != true
+        do {
+            return try fileManager.contentsOfDirectory(
+                at: url,
+                includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey],
+                options: [.skipsHiddenFiles]
+            ).filter { item in
+                let values = try? item.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+                return values?.isDirectory == true && values?.isSymbolicLink != true
+            }
+        } catch {
+            throw FileSystemAccessError.inaccessible(url, error)
         }
     }
 
@@ -48,15 +63,19 @@ final class LocalFileSystemProvider: FileSystemProvider {
 
     func removeContents(of url: URL) throws {
         guard fileManager.fileExists(atPath: url.path) else { return }
-        let items = try fileManager.contentsOfDirectory(
-            at: url,
-            includingPropertiesForKeys: [.isSymbolicLinkKey],
-            options: []
-        )
-        for item in items {
-            let values = try? item.resourceValues(forKeys: [.isSymbolicLinkKey])
-            guard values?.isSymbolicLink != true else { continue }
-            try fileManager.removeItem(at: item)
+        do {
+            let items = try fileManager.contentsOfDirectory(
+                at: url,
+                includingPropertiesForKeys: [.isSymbolicLinkKey],
+                options: []
+            )
+            for item in items {
+                let values = try? item.resourceValues(forKeys: [.isSymbolicLinkKey])
+                guard values?.isSymbolicLink != true else { continue }
+                try fileManager.removeItem(at: item)
+            }
+        } catch {
+            throw FileSystemAccessError.inaccessible(url, error)
         }
     }
 }
