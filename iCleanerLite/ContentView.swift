@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var isCleaning = false
     @State private var showLogs = false
     @State private var statusMessage: String?
+    @State private var accessDenied = false
     @State private var showCleanConfirmation = false
 
     private let scanner = AppScanner()
@@ -19,15 +20,22 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 14) {
+                    headerCard
                     summaryCard
                     scanButton
-                    if let statusMessage { statusCard(statusMessage) }
+
+                    if accessDenied {
+                        accessCard
+                    } else if let statusMessage {
+                        statusCard(statusMessage)
+                    }
+
                     if !apps.isEmpty {
                         optionsCard
                         appsCard
                         cleanButton
-                    } else if !isScanning {
+                    } else if !isScanning && !accessDenied {
                         emptyCard
                     }
                 }
@@ -35,7 +43,7 @@ struct ContentView: View {
                 .padding(.vertical, 14)
             }
             .background(Color(uiColor: .systemGroupedBackground))
-            .navigationTitle("iCleaner Lite")
+            .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .overlay { if isScanning { scanningOverlay } }
             .confirmationDialog("Clean selected files?", isPresented: $showCleanConfirmation, titleVisibility: .visible) {
@@ -47,39 +55,83 @@ struct ContentView: View {
         }
     }
 
+    private var headerCard: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "trash.circle.fill")
+                .font(.system(size: 36))
+                .foregroundStyle(Color.accentColor)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("iCleaner Lite")
+                    .font(.title2.weight(.bold))
+                Text("Clean temporary app files")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+        }
+        .padding(16)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
     private var summaryCard: some View {
         HStack(spacing: 14) {
             ZStack {
-                Circle().fill(Color.accentColor.opacity(0.12)).frame(width: 58, height: 58)
-                Image(systemName: "sparkles").font(.title2.weight(.semibold)).foregroundStyle(Color.accentColor)
+                Circle().fill(Color.accentColor.opacity(0.12)).frame(width: 54, height: 54)
+                Image(systemName: "sparkles").font(.title3.weight(.semibold)).foregroundStyle(Color.accentColor)
             }
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text("Junk found").font(.subheadline).foregroundStyle(.secondary)
-                Text(format(totalJunk)).font(.system(.title, design: .rounded).weight(.bold)).minimumScaleFactor(0.65).lineLimit(1)
+                Text(format(totalJunk)).font(.system(.title2, design: .rounded).weight(.bold)).minimumScaleFactor(0.65).lineLimit(1)
             }
             Spacer(minLength: 8)
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 3) {
                 Text("Selected").font(.caption).foregroundStyle(.secondary)
                 Text(format(selectedSize)).font(.headline.weight(.semibold)).minimumScaleFactor(0.6).lineLimit(1)
             }
         }
-        .padding(18)
-        .background(.background, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .padding(16)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var scanButton: some View {
         Button { Task { await scan() } } label: {
             Label(isScanning ? "Scanning…" : "Scan for Junk", systemImage: isScanning ? "hourglass" : "magnifyingglass")
-                .font(.headline).frame(maxWidth: .infinity).frame(minHeight: 52)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(minHeight: 50)
         }
         .buttonStyle(.borderedProminent)
         .disabled(isScanning || isCleaning)
     }
 
+    private var accessCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: "lock.trianglebadge.exclamationmark.fill")
+                    .font(.title3)
+                    .foregroundStyle(.orange)
+                Text("Filesystem Access Required")
+                    .font(.headline)
+            }
+            Text("iOS is blocking access to other apps' containers in the current environment. iCleaner Lite cannot scan or clean those folders until a supported filesystem backend is available.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Button {
+                Task { await scan() }
+            } label: {
+                Label("Retry Scan", systemImage: "arrow.clockwise")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding(16)
+        .background(.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    }
+
     private func statusCard(_ message: String) -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: message.lowercased().contains("cannot") || message.lowercased().contains("no application") ? "exclamationmark.triangle.fill" : "info.circle.fill")
-                .foregroundStyle(.secondary)
+            Image(systemName: "info.circle.fill").foregroundStyle(.secondary)
             Text(message).font(.footnote).foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(14)
@@ -123,21 +175,21 @@ struct ContentView: View {
         Button {
             if selected.contains(app.id) { selected.remove(app.id) } else { selected.insert(app.id) }
         } label: {
-            HStack(spacing: 12) {
+            HStack(spacing: 10) {
                 Image(systemName: selected.contains(app.id) ? "checkmark.circle.fill" : "circle")
-                    .font(.title3).foregroundStyle(selected.contains(app.id) ? Color.accentColor : .secondary).frame(width: 28)
-                VStack(alignment: .leading, spacing: 6) {
+                    .font(.title3).foregroundStyle(selected.contains(app.id) ? Color.accentColor : .secondary).frame(width: 26)
+                VStack(alignment: .leading, spacing: 5) {
                     Text(app.bundleID).font(.subheadline.weight(.semibold)).foregroundStyle(.primary).lineLimit(1).truncationMode(.middle)
-                    HStack(spacing: 8) {
+                    HStack(spacing: 7) {
                         sizePill("tmp", app.tmpSize)
                         sizePill("cache", app.cacheSize)
                         if showLogs && app.logSize > 0 { sizePill("logs", app.logSize) }
                     }
                 }
-                Spacer(minLength: 4)
+                Spacer(minLength: 2)
                 Text(format(app.totalSize)).font(.subheadline.weight(.semibold)).foregroundStyle(.primary).minimumScaleFactor(0.6).lineLimit(1).fixedSize(horizontal: true, vertical: false)
             }
-            .padding(.horizontal, 14).padding(.vertical, 14).contentShape(Rectangle())
+            .padding(.horizontal, 13).padding(.vertical, 13).contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
@@ -179,10 +231,12 @@ struct ContentView: View {
     private func scan() async {
         isScanning = true
         statusMessage = nil
+        accessDenied = false
         selected.removeAll()
         let result = await scanner.scan(rootURL: applicationRoot)
         apps = result.apps
         statusMessage = result.message
+        accessDenied = result.accessDenied
         isScanning = false
     }
 
@@ -195,6 +249,7 @@ struct ContentView: View {
         apps = result.apps
         selected.removeAll()
         statusMessage = result.message ?? "Cleaning complete."
+        accessDenied = result.accessDenied
         isCleaning = false
     }
 
